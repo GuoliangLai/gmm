@@ -25,11 +25,3 @@ private:
 	Vector3d p;
 
 };
-
-piont_cloud::piont_cloud()
-{
-}
-
-piont_cloud::~piont_cloud()
-{
-}
