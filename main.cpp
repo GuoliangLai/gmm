@@ -10,52 +10,52 @@ using namespace std;
 
 int main()
 {
-	double pointx[80] = { 0 };
-	double pointy[80] = { 0 };
-	double pointz[80] = { 0 };
-	double pointz2[80] = { 0 };
+	double pointx[1000] = { 0 };
+	double pointy[1000] = { 0 };
+	double pointz[1000] = { 0 };
+	double pointz2[1000] = { 0 };
 	default_random_engine e(time(0));
-	uniform_real_distribution<double> u(1, 5);
+	uniform_real_distribution<double> u(1, 50);
 	default_random_engine q(time(0));
-	uniform_real_distribution<double> w(60,68);
+	uniform_real_distribution<double> w(60,800);
 
 	default_random_engine r(time(0));
-	uniform_real_distribution<double> t(0, 1500);
+	uniform_real_distribution<double> t(0, 800);
 	std::vector<piont_cloud> p1;
 	std::vector<piont_cloud> p2;
-	for (int i = 0; i < 40; i++)
+	for (int i = 0; i < 500; i++)
 	{
 		
-		pointz[i] = u(e);
+		pointz[i] = u(e)/10.0;
 	}
-	for (int i = 0; i < 80; i++)
+	for (int i = 0; i < 1000; i++)
 	{
 
-		pointz2[i] = u(e);
+		pointz2[i] = u(e)/10.0;
 	}
-	for (int i = 40; i < 80; i++)
+	for (int i = 500; i < 1000; i++)
 	{
 
-		pointz[i] = w(q);
+		pointz[i] = w(q)/10.0;
 	}
 
-	for (int i = 0; i < 80; i++)
+	for (int i = 0; i < 1000; i++)
 	{
 
 		pointx[i] = t(r);
 	}
-	for (int i = 0; i < 80; i++)
+	for (int i = 0; i < 1000; i++)
 	{
 
 		pointy[i] = t(r);
 	}
-	for (int i = 0; i < 80; i++)
+	for (int i = 0; i < 1000; i++)
 	{
 		piont_cloud pc1;
 		pc1.set_point(pointx[i], pointy[i], pointz[i]);
 		p1.push_back(pc1);
 	}
-	for (int i = 0; i < 80; i++)
+	for (int i = 0; i < 1000; i++)
 	{
 		piont_cloud pc2;
 		pc2.set_point(pointx[i], pointy[i], pointz2[i]);
@@ -64,6 +64,11 @@ int main()
 	gmm test;
 	test.gm;
 	test.input_point(p1);
+	for (int i = 0; i < 2; i++) {
+		test.gm->alpha(i) = 0.5;
+		test.gm->sigma(i) = 1;
+		test.gm->u(i) = pointz[i];
+	}
 	test.em_step(0.2, 0.2, 1);
 	for (int i = 0; i < 2; i++) {
 		cout <<"栅格A均值为："<< test.gm->u(i) << endl;
@@ -74,6 +79,11 @@ int main()
 	gmm test2;
 	test2.gm;
 	test2.input_point(p2);
+	for (int i = 0; i < 2; i++) {
+		test2.gm->alpha(i) = 0.5;
+		test2.gm->sigma(i) = 1;
+		test2.gm->u(i) = pointz2[i];
+	}
 	test2.em_step(0.2, 0.2, 1);
 	for (int i = 0; i < 2; i++) {
 		cout << "栅格B均值为：" << test2.gm->u(i) << endl;

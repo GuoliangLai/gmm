@@ -22,21 +22,25 @@ void gmm::em_step(double u_old, double sigma_old,int N)
 		for (int j = 0; j < p.size(); j++)
 		{
 			double rjksum;
+			double* rjktmp;
 			rjksum = 0;
+			rjktmp = new double[2];
 			for (int k = 0; k < 2; k++)
 			{
 				//p[j].get_point()(2)第j个点的纵坐标
-				rjk(j, k) = gm->alpha(k) * singlegussian(gm->u(k), gm->sigma(k), p[j].get_point()(2));
+				rjktmp[k]= gm->alpha(k) * singlegussian(gm->u(k), gm->sigma(k), p[j].get_point()(2));
+				//rjk(j, k) = gm->alpha(k) * singlegussian(gm->u(k), gm->sigma(k), p[j].get_point()(2));
 				//Σrjk
-				rjksum += rjk(j, k);
-				//cout <<"第"<<j<< "rjk为" << rjk(j, k) << endl;
+				rjksum += rjktmp[k];
+				//cout <<"第"<<j<< "rjk为" << rjktmp[k] << endl;
 			}
 			for (int k = 0; k < 2; k++)
 			{
-				rjk(j, k) = rjk(j, k) / rjksum;
+				rjk(j, k) = rjktmp[k] / rjksum;
 				//cout << "rjksum为" << rjksum << endl;
 				
 			}
+			delete[]rjktmp;
 
 		}
 		//计算sigma
@@ -51,7 +55,7 @@ void gmm::em_step(double u_old, double sigma_old,int N)
 				rjkyj_uk2 += rjkyj_uk2;
 				rjksums += rjk(j, k);
 			}
-			gm->sigma(k) = rjkyj_uk2 / rjksums;
+			gm->sigma(k) =sqrt( rjkyj_uk2 / rjksums);
 			//cout <<k<< "sigma为" << gm->sigma(k) << endl;
 		}
 
@@ -97,6 +101,8 @@ void gmm::em_step(double u_old, double sigma_old,int N)
 			gm->Nk(k) = rjksumn ;
 			//cout << k << "Nk为" << gm->Nk(k) << endl;
 		}
+		cout << "第" << N << "次迭代均值1-" << gm->u(0)<< endl;
+		cout << "第" << N << "次迭代均值2-" << gm->u(1) << endl;
 
 	}
 	
@@ -115,13 +121,19 @@ void gmm::input_point(std::vector<piont_cloud> m_p)
 gmm::gmm()
 {
 	cout << "初始化成功！" << endl;
-	gm->Nk <<1,1;
-	gm->u << 1, 1;
-	gm->sigma <<2, 10;
-	gm->alpha <<0.5, 0.5;
+	//gm->Nk <<1,1;
+	//gm->u << 1, 1;
+	//gm->sigma <<1, 1;
+	//gm->alpha <<0.5, 0.5;
 }
 
 gmm::~gmm()
 {
+	if (gm != NULL)
+	{
+		delete[]gm;
+		gm = NULL;
+	}
+	
 	cout << "析构完成！" << endl;
 }
