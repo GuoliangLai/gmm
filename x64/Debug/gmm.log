@@ -1,5 +1,5 @@
 ﻿  main.cpp
-C:\Users\zwq\Desktop\doc\高斯混合模型\gmm\gmm\main.cpp(17,30): warning C4244: “参数”: 从“time_t”转换到“unsigned int”，可能丢失数据
-C:\Users\zwq\Desktop\doc\高斯混合模型\gmm\gmm\main.cpp(19,30): warning C4244: “参数”: 从“time_t”转换到“unsigned int”，可能丢失数据
-C:\Users\zwq\Desktop\doc\高斯混合模型\gmm\gmm\main.cpp(22,30): warning C4244: “参数”: 从“time_t”转换到“unsigned int”，可能丢失数据
+C:\Users\zwq\Desktop\doc\高斯混合模型\gmm\gmm\main.cpp(16,30): warning C4244: “参数”: 从“time_t”转换到“unsigned int”，可能丢失数据
+C:\Users\zwq\Desktop\doc\高斯混合模型\gmm\gmm\main.cpp(18,30): warning C4244: “参数”: 从“time_t”转换到“unsigned int”，可能丢失数据
+C:\Users\zwq\Desktop\doc\高斯混合模型\gmm\gmm\main.cpp(21,30): warning C4244: “参数”: 从“time_t”转换到“unsigned int”，可能丢失数据
   gmm.vcxproj -> C:\Users\zwq\Desktop\doc\高斯混合模型\gmm\x64\Debug\gmm.exe

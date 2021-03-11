@@ -46,33 +46,39 @@ void gmm::em_step(double u_old, double sigma_old,int N)
 		//计算sigma
 		for (int k = 0; k < 2; k++)
 		{
-			double rjkyj_uk2, rjksums;
+			double rjkyj_uk2, rjksums,rjkyj_uk2sum;
 			rjkyj_uk2 = 0;
 			rjksums = 0;
+			rjkyj_uk2sum = 0;
 			for (int j = 0; j < p.size(); j++)
 			{
 				rjkyj_uk2 = rjk(j, k) * (pow((p[j].get_point()(2) - gm->u(k)), 2));
-				rjkyj_uk2 += rjkyj_uk2;
+				rjkyj_uk2sum += rjkyj_uk2;
 				rjksums += rjk(j, k);
 			}
-			gm->sigma(k) =sqrt( rjkyj_uk2 / rjksums);
+			gm->sigma(k) =sqrt( rjkyj_uk2sum / rjksums);
 			//cout <<k<< "sigma为" << gm->sigma(k) << endl;
 		}
 
 		//计算u
 		for (int k = 0; k < 2; k++)
 		{
-			double rjkyj, rjksumu;
+			double rjkyj, rjksumu,rjkyjsum;
 			rjkyj = 0;
 			rjksumu = 0;
+			rjkyjsum = 0;
 			for (int j = 0; j < p.size(); j++)
 			{
-				rjkyj = rjk(j, k) * p[j].get_point()(2);
-				rjkyj += rjkyj;
+				rjkyj = rjk(j, k) * (p[j].get_point()(2));
+				//cout << j << "rjkyj为" << rjkyj << endl;
+				rjkyjsum += rjkyj;
 				rjksumu += rjk(j, k);
+
 			}
-			gm->u(k) = rjkyj / rjksumu;
-			//cout << k << "u为" << gm->u(k) << endl;
+			//cout << k << "rjksum为" << rjksumu << endl;
+			//cout << k << "rjkyj为" << rjkyjsum << endl;
+			gm->u(k) = rjkyjsum / rjksumu;
+
 		}
 		//计算alpha
 
@@ -101,8 +107,8 @@ void gmm::em_step(double u_old, double sigma_old,int N)
 			gm->Nk(k) = rjksumn ;
 			//cout << k << "Nk为" << gm->Nk(k) << endl;
 		}
-		cout << "第" << N << "次迭代均值1-" << gm->u(0)<< endl;
-		cout << "第" << N << "次迭代均值2-" << gm->u(1) << endl;
+		//cout << "第" << N << "次迭代均值1-" << gm->u(0)<< endl;
+		//cout << "第" << N << "次迭代均值2-" << gm->u(1) << endl;
 
 	}
 	

@@ -7,7 +7,6 @@
 #include<ctime>
 #include<random>
 using namespace std;
-
 int main()
 {
 	double pointx[1000] = { 0 };
@@ -15,30 +14,31 @@ int main()
 	double pointz[1000] = { 0 };
 	double pointz2[1000] = { 0 };
 	default_random_engine e(time(0));
-	uniform_real_distribution<double> u(1, 50);
+	uniform_real_distribution<double> u(1, 10);
 	default_random_engine q(time(0));
-	uniform_real_distribution<double> w(60,800);
+	uniform_real_distribution<double> w(20,80);
 
 	default_random_engine r(time(0));
-	uniform_real_distribution<double> t(0, 800);
+	uniform_real_distribution<double> t(1, 80);
 	std::vector<piont_cloud> p1;
 	std::vector<piont_cloud> p2;
 	for (int i = 0; i < 500; i++)
 	{
 		
 		pointz[i] = u(e)/10.0;
+
 	}
 	for (int i = 0; i < 1000; i++)
 	{
-
+	
 		pointz2[i] = u(e)/10.0;
 	}
+
 	for (int i = 500; i < 1000; i++)
 	{
 
-		pointz[i] = w(q)/10.0;
+		pointz[i] = t(r)/10.0;
 	}
-
 	for (int i = 0; i < 1000; i++)
 	{
 
@@ -69,7 +69,8 @@ int main()
 		test.gm->sigma(i) = 1;
 		test.gm->u(i) = pointz[i];
 	}
-	test.em_step(0.2, 0.2, 1);
+
+	test.em_step(0.2, 0.2, 6);
 	for (int i = 0; i < 2; i++) {
 		cout <<"栅格A均值为："<< test.gm->u(i) << endl;
 		cout << "栅格A方差为：" << test.gm->sigma(i) << endl;
@@ -83,8 +84,10 @@ int main()
 		test2.gm->alpha(i) = 0.5;
 		test2.gm->sigma(i) = 1;
 		test2.gm->u(i) = pointz2[i];
+		
 	}
-	test2.em_step(0.2, 0.2, 1);
+
+	test2.em_step(0.2, 0.2, 5);
 	for (int i = 0; i < 2; i++) {
 		cout << "栅格B均值为：" << test2.gm->u(i) << endl;
 		cout << "栅格B方差为：" << test2.gm->sigma(i) << endl;
